@@ -1,8 +1,8 @@
 ---
-version: 1.5.3
-release_date: 2026-05-07
-title: v1.5.3 发布覆盖与崩溃排查增强版
-summary: 构建后同步覆盖 main.dll 与 UE4SS.dll，减少半套文件更新导致的不兼容，并继续补强跨机器崩溃排查信息
+version: 1.5.4
+release_date: 2026-05-10
+title: v1.5.4 UE4SS 升级与 PalSchema 独立构建版
+summary: 将 PalServerBridge 和 PalSchema 统一切到较新的 RE-UE4SS-mainline 源树，并让 PalSchema 改为在本仓库内独立构建，避免继续依赖旧版官方 PalSchema 的 UE4SS 兼容假设
 ---
 
 # PalServerBridge 更新说明
@@ -13,12 +13,36 @@ summary: 构建后同步覆盖 main.dll 与 UE4SS.dll，减少半套文件更新
 
 ## 当前版本
 
-- 当前版本：`1.5.3`
-- 发布时间：`2026-05-07`
-- 更新摘要：构建后同步覆盖 main.dll 与 UE4SS.dll，减少半套文件更新导致的不兼容，并继续补强跨机器崩溃排查信息
+- 当前版本：`1.5.4`
+- 发布时间：`2026-05-10`
+- 更新摘要：UE4SS 升级到较新的 mainline 源树，PalSchema 改为在本仓库内独立构建，不再沿用旧版官方 PalSchema 的 UE4SS 依赖假设
 - 公开更新源地址：`https://raw.githubusercontent.com/xiaoliangdada77/PalServerBridge-UpdateFeed/master/UPDATE.md`
 
 ## 完整更新历史
+
+### v1.5.4 UE4SS 升级与 PalSchema 独立构建版
+
+- 更新定位：UE4SS 版本升级和 PalSchema 构建链重整
+- 适用对象：需要同时维护 PalServerBridge、PalSchema 和 UE4SS 的构建维护者
+- 更新阶段：兼容层收口与构建链统一阶段
+
+这一版的核心变化只有两件事。
+
+第一，UE4SS 切换到较新的 `RE-UE4SS-latest-mainline-e31aaaa`，让 `PalServerBridge` 和 `PalSchema` 都直接面向当前 UE4SS API 构建，减少旧版 UE4SS 带来的接口不匹配风险。
+
+第二，`PalSchema` 不再依赖原官方 PalSchema 的旧构建假设，而是在本仓库内独立构建并直接接入新的 UE4SS 源树。这样可以把兼容性问题收口到当前代码库里，而不是继续沿用旧官方产物里的历史兼容层。
+
+#### 这版改了什么
+
+- `PalServerBridge` 和 `PalSchema` 统一改为使用较新的 UE4SS mainline 源树。
+- `PalSchema` 改为在本仓库内独立构建，不再依赖旧版官方 PalSchema 的 UE4SS 兼容前提。
+- 总构建脚本和发布打包流程继续跟随 `PalServerBridge` 版本号输出。
+- 对外更新说明和实际构建结果保持一致，便于开发者按版本排查兼容性差异。
+
+#### 版本备注
+
+- 当前对外同步版本：`v1.5.4`
+- 这一版重点是 UE4SS 升级和 PalSchema 构建链调整，不新增业务 API。
 
 ### v1.5.3 发布覆盖与崩溃排查增强版
 
