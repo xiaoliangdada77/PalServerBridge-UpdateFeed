@@ -1,8 +1,8 @@
 ---
-version: 1.5.4
-release_date: 2026-05-10
-title: v1.5.4 UE4SS 升级与 PalSchema 独立构建版
-summary: 将 PalServerBridge 和 PalSchema 统一切到较新的 RE-UE4SS-mainline 源树，并让 PalSchema 改为在本仓库内独立构建，避免继续依赖旧版官方 PalSchema 的 UE4SS 兼容假设
+version: 1.5.5
+release_date: 2026-05-11
+title: v1.5.5 spawn_pal AI 修复与开发者接入反馈整理版
+summary: 基于较新 UE4SS 配套包与独立构建的 PalSchema，修复 spawn_pal 生成帕鲁后无 AI 或不行动的问题，并根据 Anteros 的两轮生产接入反馈补齐 GUID、delete_item、spawn_pal 参数和世界生成文档说明
 ---
 
 # PalServerBridge 更新说明
@@ -13,12 +13,47 @@ summary: 将 PalServerBridge 和 PalSchema 统一切到较新的 RE-UE4SS-mainli
 
 ## 当前版本
 
-- 当前版本：`1.5.4`
-- 发布时间：`2026-05-10`
-- 更新摘要：UE4SS 升级到较新的 mainline 源树，PalSchema 改为在本仓库内独立构建，不再沿用旧版官方 PalSchema 的 UE4SS 依赖假设
+- 当前版本：`1.5.5`
+- 发布时间：`2026-05-11`
+- 更新摘要：基于较新 UE4SS 配套包与独立构建的 PalSchema，修复 `spawn_pal` 生成帕鲁后无 AI 或不行动的问题，并补齐生产接入中暴露出的 GUID、`delete_item`、`spawn_pal` 参数和世界生成文档说明
 - 公开更新源地址：`https://raw.githubusercontent.com/xiaoliangdada77/PalServerBridge-UpdateFeed/master/UPDATE.md`
 
 ## 完整更新历史
+
+### v1.5.5 spawn_pal AI 修复与开发者接入反馈整理版
+
+- 更新定位：世界生成帕鲁可靠性修复与开发者接入说明补强
+- 适用对象：使用 `/api/execute`、`spawn_pal`、玩家 GUID、物品扣除、外部后台和 Discord Bot 集成的开发者
+- 更新阶段：生产反馈收口版
+
+这一版主要收口 Anteros / ApexPals 两轮生产接入反馈，以及本地复测时暴露出的 `spawn_pal` 行为问题。重点不是堆新接口，而是让已经公开的接口行为更明确、更适合被外部系统长期依赖。
+
+#### 兼容性与发布包调整
+
+- 发布包继续配套较新的 UE4SS 版本，降低 PalServerBridge、PalSchema 与 UE4SS API 不一致带来的兼容风险。
+- PalSchema 改为随发布包提供独立构建版本，不再依赖旧官方 PalSchema 所绑定的旧 UE4SS 假设。
+- 发布包继续保持 UE4SS、PalServerBridge 和 PalSchema 成套分发，减少只更新部分文件导致的版本不匹配问题。
+
+#### 这版修复了什么
+
+- 修复 `spawn_pal` 生成出的普通帕鲁没有 AI、不会主动行动的问题。
+- 调整 `spawn_pal` 的底层生成流程，避免部分环境下生成成功但后续 AI 初始化目标丢失。
+- AI 修复诊断日志改为只写入日志文件，不再刷终端控制台或 UE4SS 控制台，方便排查同时减少控制台噪音。
+- `/api/execute` 中的 `spawn_pal` 现在按世界坐标生成处理，不再要求 `steamid`。玩家上下文动作仍然需要 `steamid`。
+- `/api/players` 保留原有 `player_uid` 无短横线格式，同时新增 `player_uid_dashed`，用于和引擎 `FGuid::ToString()` 或 Lua 事件里的 `8-8-8-8` GUID 对齐。
+- `delete_item` 文档补充说明：接口走玩家库存数据路径，不是直接修改在线 Actor；离线写入是否能落到存档，取决于服务端能否通过目标玩家 UID 解析到库存对象。
+- 修正 `World Spawn Pal Guide` 示例和说明，`CharacterID` 必须放在 `SaveParameter.CharacterID`，不能放在 `data` 根层。
+
+#### 接入说明
+
+- `spawn_pal` 只负责“在世界坐标生成帕鲁并修复普通 AI 初始化”，它不等同于触发游戏内真实 Raid、入侵或祭坛召唤事件。
+- 真正的 Raid/Boss 事件还涉及 `BP_PalInvaderManager_C`、`UPalRaidBossAreaWorldSubsystem`、`UPalRaidBossManager` 等游戏内部系统，后续会作为独立研究方向处理。
+- 对接外部系统时，推荐使用 `player_uid_dashed` 与 Lua 事件或引擎侧 GUID 做匹配，继续保留 `player_uid` 是为了兼容旧接入。
+
+#### 版本备注
+
+- 当前对外同步版本：`v1.5.5`
+- 这一版包含来自 Anteros 反馈的文档修正和 API 行为整理，也包含本地确认后的 `spawn_pal` AI 修复。
 
 ### v1.5.4 UE4SS 升级与 PalSchema 独立构建版
 
