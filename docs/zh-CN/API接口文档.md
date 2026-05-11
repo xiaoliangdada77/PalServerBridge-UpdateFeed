@@ -682,18 +682,57 @@ JSON参数: `steamid` (必填)
 
 **导出所有资源**
 
-导出所有文档和模板资源，支持查看当前语言文档或一次性导出全部语言文档。
+导出所有文档和模板资源。
+
+可选参数:
+- `language`: 文档语言，默认 `current`。支持 `current`、`zh-CN`、`en-US`、`all`。
+- `include_all_languages`: 是否一次性返回全部语言文档，默认 `false`。
+
+返回规则:
+- 省略参数或 `language=current`: `resources.docs` 返回当前插件语言文档。
+- `language=zh-CN` 或 `language=en-US`: `resources.docs` 返回指定语言文档。
+- `language=all` 或 `include_all_languages=true`: `resources.docs` 返回全部语言文档。
+- `resources.docs_by_language` 始终按语言分组返回已扫描到的文档。
 
 请求示例:
 ```json
 {
-  "key": "xxx"
+  "include_all_languages": false,
+  "key": "xxx",
+  "language": "current"
 }
 ```
 
 响应示例:
 ```json
-{"status":"success","timestamp":"...","resources":{"docs":[...],"templates":[...]},"summary":{...}}
+{
+  "resources": {
+    "docs": [],
+    "docs_by_language": {
+      "en-US": [],
+      "zh-CN": []
+    },
+    "docs_languages": [
+      "zh-CN",
+      "en-US"
+    ],
+    "templates": []
+  },
+  "status": "success",
+  "summary": {
+    "docs_count": 0,
+    "docs_languages": [
+      "zh-CN",
+      "en-US"
+    ],
+    "docs_total_count": 0,
+    "include_all_languages": false,
+    "selected_language": "zh-CN",
+    "templates_count": 0,
+    "total_size_kb": 0
+  },
+  "timestamp": "2026-05-11T00:00:00Z"
+}
 ```
 
 ---

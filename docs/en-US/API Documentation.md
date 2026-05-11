@@ -682,18 +682,57 @@ Response example:
 
 **Export all resources**
 
-Exports documentation and template resources. Supports viewing current-language docs or exporting all language docs at once.
+Exports documentation and template resources.
+
+Optional parameters:
+- `language`: documentation language, default `current`. Supported values: `current`, `zh-CN`, `en-US`, `all`.
+- `include_all_languages`: whether to return all language docs in one response, default `false`.
+
+Return rules:
+- Omitted parameters or `language=current`: `resources.docs` returns docs for the current plugin language.
+- `language=zh-CN` or `language=en-US`: `resources.docs` returns docs for the selected language.
+- `language=all` or `include_all_languages=true`: `resources.docs` returns all language docs.
+- `resources.docs_by_language` always returns scanned docs grouped by language.
 
 Request example:
 ```json
 {
-  "key": "xxx"
+  "include_all_languages": false,
+  "key": "xxx",
+  "language": "current"
 }
 ```
 
 Response example:
 ```json
-{"status":"success","timestamp":"...","resources":{"docs":[...],"templates":[...]},"summary":{...}}
+{
+  "resources": {
+    "docs": [],
+    "docs_by_language": {
+      "en-US": [],
+      "zh-CN": []
+    },
+    "docs_languages": [
+      "zh-CN",
+      "en-US"
+    ],
+    "templates": []
+  },
+  "status": "success",
+  "summary": {
+    "docs_count": 0,
+    "docs_languages": [
+      "zh-CN",
+      "en-US"
+    ],
+    "docs_total_count": 0,
+    "include_all_languages": false,
+    "selected_language": "zh-CN",
+    "templates_count": 0,
+    "total_size_kb": 0
+  },
+  "timestamp": "2026-05-11T00:00:00Z"
+}
 ```
 
 ---
