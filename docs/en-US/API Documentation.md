@@ -11,36 +11,40 @@ Authentication is enforced centrally by the `set_pre_routing_handler` middleware
 Success: `{"status": "success", "message": "...", "details": {...}}`
 Failure: `{"status": "error", "message": "..."}`
 
+Click a path in the endpoint table below to jump to its details.
+
 ---
 
 ## Endpoints (22)
 
 | Method | Path | Summary |
 |------|------|------|
-| GET | `/ping` | Health check |
-| POST | `/api/players` | List online players |
-| POST | `/api/capabilities` | Get plugin capabilities |
-| POST | `/api/guilds` | List guilds |
-| POST | `/api/player_pals` | Get player pals |
-| POST | `/api/player_items` | Get player items |
-| POST | `/api/execute` | Unified execution endpoint |
-| POST | `/api/delete_item` | Delete player items |
-| POST | `/api/delete_pal` | Delete player pals |
-| POST | `/api/get_relic` | Give Lifmunk effigies |
-| POST | `/api/get_pal_egg` | Give pal egg |
-| POST | `/api/add_tech_points` | Add technology points |
-| POST | `/api/add_boss_tech_points` | Add ancient technology points |
-| POST | `/api/add_player_exp` | Add player EXP |
-| POST | `/api/add_party_exp` | Add party EXP |
-| POST | `/api/add_all_player_exp` | Add EXP to all players |
-| POST | `/api/kick_player` | Kick player |
-| POST | `/api/chat` | Public chat |
-| POST | `/api/private_message` | Private message |
-| POST | `/api/announce` | System announcement |
-| POST | `/api/resources` | Export all resources |
-| POST | `/api/field_definitions` | Get configurable field definitions |
+| GET | [/ping](#endpoint-get-ping) | Health check |
+| POST | [/api/players](#endpoint-post-api-players) | List online players |
+| POST | [/api/capabilities](#endpoint-post-api-capabilities) | Get plugin capabilities |
+| POST | [/api/guilds](#endpoint-post-api-guilds) | List guilds |
+| POST | [/api/player_pals](#endpoint-post-api-player-pals) | Get player pals |
+| POST | [/api/player_items](#endpoint-post-api-player-items) | Get player items |
+| POST | [/api/execute](#endpoint-post-api-execute) | Unified execution endpoint |
+| POST | [/api/delete_item](#endpoint-post-api-delete-item) | Delete player items |
+| POST | [/api/delete_pal](#endpoint-post-api-delete-pal) | Delete player pals |
+| POST | [/api/get_relic](#endpoint-post-api-get-relic) | Give Lifmunk effigies |
+| POST | [/api/get_pal_egg](#endpoint-post-api-get-pal-egg) | Give pal egg |
+| POST | [/api/add_tech_points](#endpoint-post-api-add-tech-points) | Add technology points |
+| POST | [/api/add_boss_tech_points](#endpoint-post-api-add-boss-tech-points) | Add ancient technology points |
+| POST | [/api/add_player_exp](#endpoint-post-api-add-player-exp) | Add player EXP |
+| POST | [/api/add_party_exp](#endpoint-post-api-add-party-exp) | Add party EXP |
+| POST | [/api/add_all_player_exp](#endpoint-post-api-add-all-player-exp) | Add EXP to all players |
+| POST | [/api/kick_player](#endpoint-post-api-kick-player) | Kick player |
+| POST | [/api/chat](#endpoint-post-api-chat) | Public chat |
+| POST | [/api/private_message](#endpoint-post-api-private-message) | Private message |
+| POST | [/api/announce](#endpoint-post-api-announce) | System announcement |
+| POST | [/api/resources](#endpoint-post-api-resources) | Export all resources |
+| POST | [/api/field_definitions](#endpoint-post-api-field-definitions) | Get configurable field definitions |
 
 ---
+
+<a id="endpoint-get-ping"></a>
 
 ## GET /ping
 
@@ -54,6 +58,8 @@ pong
 ```
 
 ---
+
+<a id="endpoint-post-api-players"></a>
 
 ## POST /api/players
 
@@ -101,6 +107,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-capabilities"></a>
+
 ## POST /api/capabilities
 
 **Get plugin capabilities**
@@ -125,6 +133,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-guilds"></a>
 
 ## POST /api/guilds
 
@@ -159,6 +169,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-player-pals"></a>
+
 ## POST /api/player_pals
 
 **Get player pals**
@@ -181,6 +193,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-player-items"></a>
 
 ## POST /api/player_items
 
@@ -215,6 +229,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-execute"></a>
 
 ## POST /api/execute
 
@@ -260,6 +276,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-delete-item"></a>
+
 ## POST /api/delete_item
 
 **Delete player items**
@@ -292,6 +310,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-delete-pal"></a>
 
 ## POST /api/delete_pal
 
@@ -330,6 +350,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-get-relic"></a>
+
 ## POST /api/get_relic
 
 **Give Lifmunk effigies**
@@ -356,6 +378,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-get-pal-egg"></a>
 
 ## POST /api/get_pal_egg
 
@@ -384,6 +408,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-add-tech-points"></a>
+
 ## POST /api/add_tech_points
 
 **Add technology points**
@@ -411,6 +437,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-add-boss-tech-points"></a>
+
 ## POST /api/add_boss_tech_points
 
 **Add ancient technology points**
@@ -437,6 +465,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-add-player-exp"></a>
 
 ## POST /api/add_player_exp
 
@@ -470,6 +500,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-add-party-exp"></a>
+
 ## POST /api/add_party_exp
 
 **Add party EXP**
@@ -499,6 +531,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-add-all-player-exp"></a>
+
 ## POST /api/add_all_player_exp
 
 **Add EXP to all players**
@@ -526,6 +560,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-kick-player"></a>
+
 ## POST /api/kick_player
 
 **Kick player**
@@ -552,6 +588,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-chat"></a>
 
 ## POST /api/chat
 
@@ -582,6 +620,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-private-message"></a>
+
 ## POST /api/private_message
 
 **Private message**
@@ -609,6 +649,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-announce"></a>
+
 ## POST /api/announce
 
 **System announcement**
@@ -634,6 +676,8 @@ Response example:
 
 ---
 
+<a id="endpoint-post-api-resources"></a>
+
 ## POST /api/resources
 
 **Export all resources**
@@ -653,6 +697,8 @@ Response example:
 ```
 
 ---
+
+<a id="endpoint-post-api-field-definitions"></a>
 
 ## POST /api/field_definitions
 

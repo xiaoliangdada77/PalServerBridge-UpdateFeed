@@ -11,36 +11,40 @@
 成功: `{"status": "success", "message": "...", "details": {...}}`
 失败: `{"status": "error", "message": "..."}`
 
+点击下方接口列表中的路径，可跳转到对应接口详情。
+
 ---
 
 ## 接口列表 (22 个)
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/ping` | 健康检查 |
-| POST | `/api/players` | 获取在线玩家列表 |
-| POST | `/api/capabilities` | 获取插件能力标记 |
-| POST | `/api/guilds` | 获取公会列表 |
-| POST | `/api/player_pals` | 获取玩家帕鲁数据 |
-| POST | `/api/player_items` | 获取玩家物品数据 |
-| POST | `/api/execute` | 统一执行入口 |
-| POST | `/api/delete_item` | 删除玩家物品 |
-| POST | `/api/delete_pal` | 删除玩家帕鲁 |
-| POST | `/api/get_relic` | 给予翠叶鼠雕像 |
-| POST | `/api/get_pal_egg` | 给予帕鲁蛋 |
-| POST | `/api/add_tech_points` | 给予科技点 |
-| POST | `/api/add_boss_tech_points` | 给予古代科技点 |
-| POST | `/api/add_player_exp` | 给予玩家经验 |
-| POST | `/api/add_party_exp` | 给予队伍经验 |
-| POST | `/api/add_all_player_exp` | 给予所有玩家经验 |
-| POST | `/api/kick_player` | 踢出玩家 |
-| POST | `/api/chat` | 公屏聊天 |
-| POST | `/api/private_message` | 私聊消息 |
-| POST | `/api/announce` | 系统公告 |
-| POST | `/api/resources` | 导出所有资源 |
-| POST | `/api/field_definitions` | 获取可配置字段定义 |
+| GET | [/ping](#endpoint-get-ping) | 健康检查 |
+| POST | [/api/players](#endpoint-post-api-players) | 获取在线玩家列表 |
+| POST | [/api/capabilities](#endpoint-post-api-capabilities) | 获取插件能力标记 |
+| POST | [/api/guilds](#endpoint-post-api-guilds) | 获取公会列表 |
+| POST | [/api/player_pals](#endpoint-post-api-player-pals) | 获取玩家帕鲁数据 |
+| POST | [/api/player_items](#endpoint-post-api-player-items) | 获取玩家物品数据 |
+| POST | [/api/execute](#endpoint-post-api-execute) | 统一执行入口 |
+| POST | [/api/delete_item](#endpoint-post-api-delete-item) | 删除玩家物品 |
+| POST | [/api/delete_pal](#endpoint-post-api-delete-pal) | 删除玩家帕鲁 |
+| POST | [/api/get_relic](#endpoint-post-api-get-relic) | 给予翠叶鼠雕像 |
+| POST | [/api/get_pal_egg](#endpoint-post-api-get-pal-egg) | 给予帕鲁蛋 |
+| POST | [/api/add_tech_points](#endpoint-post-api-add-tech-points) | 给予科技点 |
+| POST | [/api/add_boss_tech_points](#endpoint-post-api-add-boss-tech-points) | 给予古代科技点 |
+| POST | [/api/add_player_exp](#endpoint-post-api-add-player-exp) | 给予玩家经验 |
+| POST | [/api/add_party_exp](#endpoint-post-api-add-party-exp) | 给予队伍经验 |
+| POST | [/api/add_all_player_exp](#endpoint-post-api-add-all-player-exp) | 给予所有玩家经验 |
+| POST | [/api/kick_player](#endpoint-post-api-kick-player) | 踢出玩家 |
+| POST | [/api/chat](#endpoint-post-api-chat) | 公屏聊天 |
+| POST | [/api/private_message](#endpoint-post-api-private-message) | 私聊消息 |
+| POST | [/api/announce](#endpoint-post-api-announce) | 系统公告 |
+| POST | [/api/resources](#endpoint-post-api-resources) | 导出所有资源 |
+| POST | [/api/field_definitions](#endpoint-post-api-field-definitions) | 获取可配置字段定义 |
 
 ---
+
+<a id="endpoint-get-ping"></a>
 
 ## GET /ping
 
@@ -54,6 +58,8 @@ pong
 ```
 
 ---
+
+<a id="endpoint-post-api-players"></a>
 
 ## POST /api/players
 
@@ -101,6 +107,8 @@ GUID 字段:
 
 ---
 
+<a id="endpoint-post-api-capabilities"></a>
+
 ## POST /api/capabilities
 
 **获取插件能力标记**
@@ -125,6 +133,8 @@ GUID 字段:
 ```
 
 ---
+
+<a id="endpoint-post-api-guilds"></a>
 
 ## POST /api/guilds
 
@@ -159,6 +169,8 @@ GUID 字段:
 
 ---
 
+<a id="endpoint-post-api-player-pals"></a>
+
 ## POST /api/player_pals
 
 **获取玩家帕鲁数据**
@@ -181,6 +193,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-player-items"></a>
 
 ## POST /api/player_items
 
@@ -215,6 +229,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-execute"></a>
 
 ## POST /api/execute
 
@@ -260,6 +276,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-delete-item"></a>
+
 ## POST /api/delete_item
 
 **删除玩家物品**
@@ -292,6 +310,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-delete-pal"></a>
 
 ## POST /api/delete_pal
 
@@ -330,6 +350,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-get-relic"></a>
+
 ## POST /api/get_relic
 
 **给予翠叶鼠雕像**
@@ -356,6 +378,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-get-pal-egg"></a>
 
 ## POST /api/get_pal_egg
 
@@ -384,6 +408,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-add-tech-points"></a>
+
 ## POST /api/add_tech_points
 
 **给予科技点**
@@ -411,6 +437,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-add-boss-tech-points"></a>
+
 ## POST /api/add_boss_tech_points
 
 **给予古代科技点**
@@ -437,6 +465,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-add-player-exp"></a>
 
 ## POST /api/add_player_exp
 
@@ -470,6 +500,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-add-party-exp"></a>
+
 ## POST /api/add_party_exp
 
 **给予队伍经验**
@@ -499,6 +531,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-add-all-player-exp"></a>
+
 ## POST /api/add_all_player_exp
 
 **给予所有玩家经验**
@@ -526,6 +560,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-kick-player"></a>
+
 ## POST /api/kick_player
 
 **踢出玩家**
@@ -552,6 +588,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-chat"></a>
 
 ## POST /api/chat
 
@@ -582,6 +620,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-private-message"></a>
+
 ## POST /api/private_message
 
 **私聊消息**
@@ -609,6 +649,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-announce"></a>
+
 ## POST /api/announce
 
 **系统公告**
@@ -634,6 +676,8 @@ JSON参数: `steamid` (必填)
 
 ---
 
+<a id="endpoint-post-api-resources"></a>
+
 ## POST /api/resources
 
 **导出所有资源**
@@ -653,6 +697,8 @@ JSON参数: `steamid` (必填)
 ```
 
 ---
+
+<a id="endpoint-post-api-field-definitions"></a>
 
 ## POST /api/field_definitions
 
