@@ -1,33 +1,38 @@
 # PalServerBridge
 
-PalServerBridge 是面向 Palworld 专用服务器的 UE4SS C++ 插件，用于把游戏内能力暴露给外部管理工具。它适合接入服务器后台、Discord Bot、活动系统、反作弊审计、自动化运维脚本等场景。
+## Languages
 
-本仓库用于公开项目入口与更新说明。最新版本说明见 [UPDATE.md](UPDATE.md)。
+- [English](README.md)
+- [Chinese (Simplified)](README-CN.md)
 
-## 主要功能
+PalServerBridge is a UE4SS C++ plugin for Palworld dedicated servers. It exposes in-game server capabilities to external tools, making it useful for admin dashboards, Discord bots, event systems, anti-cheat audits, and server automation.
 
-- 提供 HTTP API，让外部程序读取和操作 Palworld 服务器数据。
-- 查询在线玩家、玩家身份、背包物品、帕鲁仓库、队伍帕鲁等信息。
-- 支持发放和删除物品、删除指定帕鲁、发送聊天消息、公告和私聊消息。
-- 支持通过接口执行服务器侧操作，例如按坐标生成帕鲁。
-- 面向管理面板、Discord 指令、PvP 悬赏、活动奖励、导入审计等自动化场景。
-- 发布包包含经过兼容验证的 UE4SS 与自构建 PalSchema，减少不同依赖版本混用带来的兼容问题。
+This repository provides the public project entry point and update notes. See [UPDATE.md](UPDATE.md) for the latest release information.
 
-## 使用场景
+## Features
 
-- 服务器后台：查看玩家资料、背包、帕鲁数据，并处理异常资产。
-- Discord Bot：提供查询、发奖、扣款、公告、活动管理等指令。
-- 活动系统：按事件触发奖励、生成目标、广播活动状态。
-- 反作弊审计：读取帕鲁 SaveParameter，检查被动、个体值、等级、Rank 等异常数据。
+- Provides HTTP APIs for external programs to read and operate Palworld server data.
+- Queries online players, player identity data, inventory items, pal storage, and party pals.
+- Supports giving and deleting items, deleting specific pals, sending chat messages, announcements, and private messages.
+- Supports server-side actions through APIs, including coordinate-based pal spawning.
+- Designed for admin panels, Discord commands, PvP bounties, event rewards, and import audits.
+- Release packages include a compatibility-verified UE4SS build and a self-built PalSchema, reducing version-mismatch issues between dependencies.
 
-## 更新说明
+## Use Cases
 
-版本更新、兼容性调整、接口变化和修复记录会发布在 [UPDATE.md](UPDATE.md)。
+- Server admin panels: inspect player profiles, inventories, pal data, and handle abnormal assets.
+- Discord bots: provide query, reward, debit, announcement, and event-management commands.
+- Event systems: trigger rewards, spawn targets, and broadcast event state.
+- Anti-cheat audits: read pal SaveParameter data and inspect passives, IVs, level, rank, and other fields.
 
-## 支持作者
+## Updates
 
-如果 PalServerBridge 对你的服务器有帮助，可以通过下面的赞赏码支持维护。
+Release notes, compatibility changes, API changes, and fixes are published in [UPDATE.md](UPDATE.md).
 
-| 微信赞赏 | 支付宝赞赏 |
+## Support
+
+If PalServerBridge helps your server, you can support ongoing maintenance through the donation QR codes below.
+
+| WeChat | Alipay |
 | --- | --- |
-| ![微信赞赏码](src/微信赞赏码.jpg) | ![支付宝赞赏码](src/支付宝赞赏码.jpg) |
+| ![WeChat donation QR code](src/wechat-donation.jpg) | ![Alipay donation QR code](src/alipay-donation.jpg) |
