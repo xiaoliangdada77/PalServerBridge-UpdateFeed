@@ -1,8 +1,8 @@
 ---
-version: 1.5.8
-release_date: 2026-06-19
-title: v1.5.8 稳定性加固与接口行为收口版
-summary: 回滚未成熟的等级突破实验能力，集中加固反射调用、HTTP 输入、模板执行、游戏线程任务和资源边界，修复经验发放、世界生成游荡、物品/帕鲁操作等生产问题，并移除无法可靠生效的踢人接口
+version: 1.5.9
+release_date: 2026-06-20
+title: v1.5.9 spawn_pal 原生 AI 生成稳定版
+summary: 重构 spawn_pal 世界生成管线，收口为单一原生 spawner delegate 路径，要求生成结果必须带原生 AI，否则直接失败；修复批量生成崩溃、无 AI、重复生成和不可控 fallback 问题，并开放 spawn_pal 队列节奏配置
 ---
 
 # PalServerBridge 更新说明
@@ -13,12 +13,60 @@ summary: 回滚未成熟的等级突破实验能力，集中加固反射调用�
 
 ## 当前版本
 
-- 当前版本：`1.5.8`
-- 发布时间：`2026-06-19`
-- 更新摘要：回滚未成熟的等级突破实验能力，集中加固反射调用、HTTP 输入、模板执行、游戏线程任务和资源边界，修复经验发放、世界生成游荡、物品/帕鲁操作等生产问题，并移除无法可靠生效的踢人接口
+- 当前版本：`1.5.9`
+- 发布时间：`2026-06-20`
+- 更新摘要：重构 spawn_pal 世界生成管线，收口为单一原生 spawner delegate 路径，要求生成结果必须带原生 AI，否则直接失败；修复批量生成崩溃、无 AI、重复生成和不可控 fallback 问题，并开放 spawn_pal 队列节奏配置
 - 公开更新源地址：`https://raw.githubusercontent.com/xiaoliangdada77/PalServerBridge-UpdateFeed/master/UPDATE.md`
 
 ## 完整更新历史
+
+### v1.5.9 spawn_pal 原生 AI 生成稳定版
+
+- 更新定位：`spawn_pal` 世界生成稳定性重构、原生 AI 初始化收口与队列节奏配置化
+- 适用对象：使用 `/api/execute`、`spawn_pal`、商城刷怪、活动生成、自动化生成脚本和需要批量生成世界帕鲁的服主与开发者
+- 更新阶段：生成管线重构收口阶段
+
+这一版集中处理 1.5.8 之后继续暴露的 `spawn_pal` 问题：多数量生成有时直接崩溃、生成后没有攻击 AI/游荡 AI、原生生成路径有时返回无 handle、部分方案会重复生成或结果不可控。经过多轮验证后，1.5.9 不再保留多 fallback、多后处理、多重复 tick 的生成链路，而是收口为单一原生 spawner delegate 管线。
+
+#### 重要调整
+
+- `spawn_pal` 改为使用隐藏的 `BP_PalSpawner_Standard_C` 上下文和原生 `Spawn Delegate` 完成 AI 初始化。
+- 生成结果必须带原生 AI。无法创建 spawner 上下文、无法绑定原生 delegate、无法写入 `IndividualHandleList` 等情况会直接失败，不再降级生成无 AI 帕鲁。
+- 移除不稳定的直接 BP 生成、Network Actor 生成、CharacterManager 生成、Native outside spawn request、raw handle fallback、强制 AI 激活和反射式 AI 后处理路径。
+- 移除人工请求节奏限制和 spawner context tick override，避免同一功能里存在多套互相影响的节奏控制。
+- `GivePal` 与 `spawn_pal` 仍然保持职责分离：`GivePal` 是发放到玩家容器，`spawn_pal` 是世界坐标生成。
+
+#### 这版修复了什么
+
+- 修复 `count > 1` 批量生成后几秒内服务端窗口直接关闭、无日志崩溃的问题。
+- 修复生成成功但帕鲁没有攻击 AI、没有游荡 AI、只站在原地的问题。
+- 修复部分生成路径返回成功但实际没有生成、返回 no handles、或同一请求生成两份的问题。
+- 修复中途 finalization、actor ready hook、参数初始化回调等时序方案带来的不稳定崩溃风险。
+- 批量生成继续通过游戏线程队列执行，HTTP 请求线程只负责入队，避免跨线程直接触碰游戏对象。
+- 队列生命周期在模块初始化和关闭时重置，减少重载、关闭或残留请求影响下一轮运行。
+- 生成完成后的确认逻辑与 AI 初始化解耦，减少 finalization 阶段再次干预 AI 导致的崩溃风险。
+
+#### 配置与日志
+
+- 新增 `spawn_pal.max_requests_per_tick`，默认 `16`，用于控制每个游戏 Tick 最多处理多少个 `spawn_pal` 队列请求。
+- 新增 `spawn_pal.request_cooldown_ms`，默认 `0`，用于控制两次 `spawn_pal` 请求之间的冷却时间。
+- 新增 `spawn_pal.request_after_finalization_cooldown_ms`，默认 `0`，用于控制单只帕鲁完成最终确认后，下次 `spawn_pal` 请求的额外冷却。
+- 上述配置会随 `config.json` 自动同步补齐，旧配置文件无需手动重建。
+- 默认关闭 UE4SS Debug GUI 日志输出，避免 debug 级生成诊断刷屏；文件日志仍可按 `log.file_level` 保留 debug 信息。
+- 调整配置加载顺序，先加载配置再初始化日志系统，使日志级别和输出开关能按配置生效。
+
+#### 接入说明
+
+- `spawn_pal` 现在是“要么生成带原生 AI 的世界帕鲁，要么失败”的行为，不再接受无 AI 成功作为 fallback。
+- 如果需要高频批量生成，优先调整 `spawn_pal.max_requests_per_tick` 和两个 cooldown 配置，而不是在外部并发压测 HTTP 接口。
+- 默认配置下已经移除人工延迟，`count=3` 会尽量在游戏线程队列中快速处理；实际出现时间仍取决于游戏线程 Tick 和引擎生成时序。
+- 如果接口返回失败，请优先检查日志中的 spawner context、native delegate、IndividualHandleList 和 queued request 相关记录。
+- 这一版没有重新引入等级上限突破，也没有恢复已移除的踢人接口。
+
+#### 版本备注
+
+- 当前对外同步版本：`v1.5.9`
+- 这一版覆盖 2026-06-19 13:31 之后到 2026-06-20 01:19 的 `spawn_pal` 生成管线重构、配置化和版本号更新。
 
 ### v1.5.8 稳定性加固与接口行为收口版
 
