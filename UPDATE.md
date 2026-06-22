@@ -1,8 +1,8 @@
 ---
-version: 1.5.11
+version: 1.5.12
 release_date: 2026-06-22
-title: v1.5.11 物品与帕鲁策略限制版
-summary: 新增物品使用/进食/消耗/装备限制与帕鲁出战限制；抽取共享策略规则引擎，支持 deny/require、等级与属性强化条件、私聊提示和测试接口；修复策略热重载、出战拦截、装备拦截与本地化属性名归一化问题
+title: v1.5.12 spawn_pal StaticParameter 早期写入修复版
+summary: 修复 spawn_pal 世界生成时 StaticParameter 写入过晚导致部分字段不生效的问题；Actor ready 监听改为 pre-hook，在原生 ready handler 执行前写入静态参数；撤回不可捕获捕获拦截兜底，保持生成管线只写 StaticParameter
 ---
 
 # PalServerBridge 更新说明
@@ -13,12 +13,39 @@ summary: 新增物品使用/进食/消耗/装备限制与帕鲁出战限制；�
 
 ## 当前版本
 
-- 当前版本：`1.5.11`
+- 当前版本：`1.5.12`
 - 发布时间：`2026-06-22`
-- 更新摘要：新增物品使用/进食/消耗/装备限制与帕鲁出战限制；抽取共享策略规则引擎，支持 deny/require、等级与属性强化条件、私聊提示和测试接口；修复策略热重载、出战拦截、装备拦截与本地化属性名归一化问题
+- 更新摘要：修复 spawn_pal 世界生成时 StaticParameter 写入过晚导致部分字段不生效的问题；Actor ready 监听改为 pre-hook，在原生 ready handler 执行前写入静态参数；撤回不可捕获捕获拦截兜底，保持生成管线只写 StaticParameter
 - 公开更新源地址：`https://raw.githubusercontent.com/xiaoliangdada77/PalServerBridge-UpdateFeed/master/UPDATE.md`
 
 ## 完整更新历史
+
+### v1.5.12 spawn_pal StaticParameter 早期写入修复版
+
+- 更新定位：`spawn_pal` 世界生成静态参数写入时机修复
+- 适用对象：使用 `spawn_pal` 生成世界帕鲁，并依赖 `StaticParameter` 控制捕获、静态标记或外观相关参数的服主与后台开发者
+- 更新阶段：生成管线行为收口与静态参数验证阶段
+
+这一版修复 `spawn_pal` 生成后再补 `StaticParameter` 时机过晚的问题。旧逻辑在 Actor ready 后置阶段或后续 pending finalization 中写入静态参数，部分游戏逻辑可能已经读取过静态组件，导致例如 `IsUncapturable` 这类字段表现不稳定。
+
+#### 重要调整
+
+- Actor ready 监听由 post-hook 调整为 pre-hook，在游戏原生 ready handler 执行前写入 `StaticParameter`。
+- pre-hook 不阻止原函数、不替换原生初始化流程，只提前执行 `ApplyStaticParameterOverrides`。
+- 如果 pre-hook 时目标组件仍不可写，会把 pending finalization 放回队列，避免过早写入失败后丢失后续重试。
+- 撤回不可捕获保护表和捕获流程拦截兜底，生成管线不再额外拦截捕获行为。
+- `spawn_pal` 继续使用原生 AI delegate 管线，保持 1.5.9 之后的带 AI 生成行为。
+
+#### 行为说明
+
+- `StaticParameter` 仍然只对 `spawn_pal` 世界生成生效，直接发放帕鲁不会应用这类世界 Actor 静态参数。
+- 这一版只负责尽早写入 `StaticParameter`；如果某个字段被游戏更早的构造流程消费，仍需要继续定位更早的原生初始化入口。
+- 日志中的 `SpawnPal finalized` 若显示 `trigger=spawned-actor-pre` 或 `trigger=actor-ready-pre`，表示已经走到提前写入路径。
+
+#### 版本备注
+
+- 当前对外同步版本：`v1.5.12`
+- 这一版覆盖 2026-06-22 的 `spawn_pal` StaticParameter 写入时机修复、不可捕获拦截兜底撤回和生成管线语义收口。
 
 ### v1.5.11 物品与帕鲁策略限制版
 
